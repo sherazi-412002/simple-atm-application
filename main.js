@@ -8,52 +8,62 @@ let pinAnswer = await inquirer.prompt({
     type: "number",
 });
 if (pinAnswer.pin === myPin) {
-    console.log("Correct pin code!");
+    console.log("Correct pin number!");
     let operationAnswer = await inquirer.prompt({
         name: "operation",
         message: "Please select option.",
         type: "list",
-        choices: ["withdraw", "check balance", "fast cash"],
+        choices: ["withdraw", "check balance"],
     });
     if (operationAnswer.operation === "withdraw") {
         let amountAns = await inquirer.prompt([
             {
                 name: "amount",
                 message: "Enter your amount?",
-                type: "number",
+                type: "list",
+                choices: ["Enter your amount", "fast cash"]
             },
         ]);
-        myBalance -= amountAns.amount;
-        if (amountAns.amount <= myBalance) {
-            console.log(`Your remaining balance is:  ${myBalance}`);
+        if (amountAns.amount === "Enter your amount") {
+            let amountValue = await inquirer.prompt([{
+                    name: "value",
+                    message: "Enter your amount for withdraw.",
+                    type: "number",
+                }]);
+            let myBalance2 = myBalance - amountValue.value;
+            if (amountValue.value <= myBalance) {
+                console.log(`Your remaining balance is:  ${myBalance2}`);
+            }
+            else {
+                console.log("Insufficient balance");
+            }
         }
-        else {
-            console.log("Insufficient balance");
+        else if (amountAns.amount === "fast cash") {
+            console.log("Choose cash amount for withdraw.");
+            let cashAmountAns = await inquirer.prompt({
+                name: "cashAmount",
+                message: "Please select your cash amount option.",
+                type: "list",
+                choices: ["1000", "5000", "10000", "15000"]
+            });
+            if (cashAmountAns.cashAmount === "1000") {
+                console.log(`Your current balance is:  ${myBalance -= 1000}`);
+            }
+            else if (cashAmountAns.cashAmount === "5000") {
+                console.log(`Your current balance is:  ${myBalance -= 5000}`);
+            }
+            else if (cashAmountAns.cashAmount === "10000") {
+                console.log(`Your current balance is:  ${myBalance -= 10000}`);
+            }
+            else if (cashAmountAns.cashAmount === "15000") {
+                console.log(`Your current balance is:  ${myBalance -= 15000}`);
+            }
         }
     }
     else if (operationAnswer.operation === "check balance") {
         console.log(`Your current balance is: ${myBalance}`);
     }
     else if (operationAnswer.operation === "fast cash") {
-        console.log("Choose cash amount for withdraw.");
-        let cashAmountAns = await inquirer.prompt({
-            name: "cashAmount",
-            message: "Please select your cash amount option.",
-            type: "list",
-            choices: ["1000", "5000", "10000", "15000"]
-        });
-        if (cashAmountAns.cashAmount === "1000") {
-            console.log(`Your current balance is:  ${myBalance -= 1000}`);
-        }
-        else if (cashAmountAns.cashAmount === "5000") {
-            console.log(`Your current balance is:  ${myBalance -= 5000}`);
-        }
-        else if (cashAmountAns.cashAmount === "10000") {
-            console.log(`Your current balance is:  ${myBalance -= 10000}`);
-        }
-        else if (cashAmountAns.cashAmount === "15000") {
-            console.log(`Your current balance is:  ${myBalance -= 15000}`);
-        }
     }
 }
 else {
