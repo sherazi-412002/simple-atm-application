@@ -1,6 +1,6 @@
 {
   "name": "shah86-simple-atm-application",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "This is a simple atm application.",
   "main": "main.js",
   "type": "module",
